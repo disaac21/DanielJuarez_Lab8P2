@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Zona {
     
-    public String IDZona;
+    public int IDZona;
     public String NombreZona;
     public ArrayList <Item> ItemsZona = new ArrayList();
     public int Remuneracion;
@@ -14,7 +14,7 @@ public class Zona {
     public Zona() {
     }
 
-    public Zona(String IDZona, String NombreZona, int Remuneracion, int ProbabilidadDerrumbe, int ProbabilidadAtaque) {
+    public Zona(int IDZona, String NombreZona, int Remuneracion, int ProbabilidadDerrumbe, int ProbabilidadAtaque) {
         this.IDZona = IDZona;
         this.NombreZona = NombreZona;
         this.Remuneracion = Remuneracion;
@@ -22,11 +22,11 @@ public class Zona {
         this.ProbabilidadAtaque = ProbabilidadAtaque;
     }
 
-    public String getIDZona() {
+    public int getIDZona() {
         return IDZona;
     }
 
-    public void setIDZona(String IDZona) {
+    public void setIDZona(int IDZona) {
         this.IDZona = IDZona;
     }
 
