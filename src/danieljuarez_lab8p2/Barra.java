@@ -60,9 +60,8 @@ public class Barra extends Thread {
                 JOptionPane.showMessageDialog(null, "Su Mascota Ha Fallecido", "Pet", JOptionPane.PLAIN_MESSAGE);
                 Vivo = false;
             }
-
             try {
-                Thread.sleep(0);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
             }
         }

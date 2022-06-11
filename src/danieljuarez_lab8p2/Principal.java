@@ -28,6 +28,7 @@ public class Principal extends javax.swing.JFrame {
     boolean petfeed = false;
     boolean petvive = false;
     int decrease = currentpet.PuntosVidaDecrease;
+    Thread bar;
 
     /**
      * Creates new form Principal
@@ -37,8 +38,8 @@ public class Principal extends javax.swing.JFrame {
         player.setDinero(1000);
         player.setDineroBanco(1000);
         b = new Barra(PetProgressBar, petfeed, petvive, decrease);
-        Thread bar = new Thread(b);
-        bar.start();
+        bar = new Thread(b);
+        
     }
 
     /**
@@ -524,12 +525,10 @@ public class Principal extends javax.swing.JFrame {
                 if (comando.contains(player.MascotasJugador.get(i).getNombreMascota())) {
                     currentpet = player.MascotasJugador.get(i);
                     OutputTextArea.append("Mascota Activa: " + currentpet + "\n");
-                    b.Cambio = true;
                 }
             }
         }
         if (comando.contains("!pet feed")) {
-            petfeed = false;
             for (int i = 0; i < player.ItemsJugador.size(); i++) {
                 int comida = Integer.parseInt(comando.substring(10, comando.length()));
                 if (player.ItemsJugador.get(i).IDItem == comida) {
@@ -540,7 +539,10 @@ public class Principal extends javax.swing.JFrame {
                         PetProgressBar.setBackground(currentpet.getColorMascota());
                         petfeed = true;
                         if (petfeed) {
+                            b.Cambio = true;
+                            decrease = currentpet.getPuntosVida();
                             PetProgressBar.setValue(currentpet.PuntosVida);
+                            bar.start();
                         }
                         
                     } else {
