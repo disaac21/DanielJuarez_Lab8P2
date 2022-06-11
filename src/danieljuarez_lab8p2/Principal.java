@@ -524,7 +524,7 @@ public class Principal extends javax.swing.JFrame {
                     currentpet = player.MascotasJugador.get(i);
                     OutputTextArea.append("Mascota Activa: " + currentpet + "\n");
                     PetProgressBar.setBackground(currentpet.getColorMascota());
-                    
+                    b.Decrease = currentpet.Delay;
                     b.YaSet = true;
                     b.start();
                 }
