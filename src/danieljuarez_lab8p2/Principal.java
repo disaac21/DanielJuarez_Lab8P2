@@ -5,12 +5,26 @@
  */
 package danieljuarez_lab8p2;
 
+import java.util.Random;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JColorChooser;
+
 /**
  *
  * @author danie
  */
 public class Principal extends javax.swing.JFrame {
 
+    ArrayList<Mascota> MascotasDisponibles = new ArrayList();
+    ArrayList<Zona> Zonas = new ArrayList();
+    ArrayList<Item> ItemsDisponibles = new ArrayList();
+    int ContadorItems = 1;
+    int ContadorZonas = 1;
+    static Random random = new Random();
+    Jugador player = new Jugador();
+    Mascota currentpet = new Mascota();
     /**
      * Creates new form Principal
      */
@@ -30,53 +44,53 @@ public class Principal extends javax.swing.JFrame {
         MainTabbedPane = new javax.swing.JTabbedPane();
         MascotaTab = new javax.swing.JPanel();
         PetProgressBar = new javax.swing.JProgressBar();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        PetScrollPane = new javax.swing.JScrollPane();
+        PetTable = new javax.swing.JTable();
         AdminTab = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jLabel15 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        CrearMascota = new javax.swing.JLabel();
+        NombrePet = new javax.swing.JLabel();
+        PetNombreTextField = new javax.swing.JTextField();
+        PuntosdeVida = new javax.swing.JLabel();
+        PuntosVidaTextField = new javax.swing.JTextField();
+        Delay = new javax.swing.JLabel();
+        DelayTextField = new javax.swing.JTextField();
+        Costo = new javax.swing.JLabel();
+        CostoTextField = new javax.swing.JTextField();
+        ColorButton = new javax.swing.JButton();
+        CrearPetButton = new javax.swing.JButton();
+        CrearItem = new javax.swing.JLabel();
+        NombreItem = new javax.swing.JLabel();
+        ItemNombreTextField = new javax.swing.JTextField();
+        AlimentoCheckBox = new javax.swing.JCheckBox();
+        Obtencion = new javax.swing.JLabel();
+        ObtencionTextField = new javax.swing.JTextField();
+        PrecioVenta = new javax.swing.JLabel();
+        PrecioVentaTextField = new javax.swing.JTextField();
+        CrearItemButton = new javax.swing.JButton();
+        CrearZona = new javax.swing.JLabel();
+        NombreZona = new javax.swing.JLabel();
+        ZonaNombreTextField = new javax.swing.JTextField();
+        Derrumbe = new javax.swing.JLabel();
+        DerrumbeTextField = new javax.swing.JTextField();
+        Ataque = new javax.swing.JLabel();
+        AtaqueTextField = new javax.swing.JTextField();
+        AgregarItem = new javax.swing.JLabel();
+        AddItemScrollPane = new javax.swing.JScrollPane();
+        AddItemList = new javax.swing.JList<>();
+        Items = new javax.swing.JLabel();
+        ItemsScrollPane = new javax.swing.JScrollPane();
+        ItemsList = new javax.swing.JList<>();
+        AgregarItemButton = new javax.swing.JButton();
+        CrearZonaButton = new javax.swing.JButton();
         ComandosTab = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField11 = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
+        OutputScrollPane = new javax.swing.JScrollPane();
+        OutputTextArea = new javax.swing.JTextArea();
+        InputTextField = new javax.swing.JTextField();
+        InputButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        PetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -102,7 +116,7 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        PetScrollPane.setViewportView(PetTable);
 
         javax.swing.GroupLayout MascotaTabLayout = new javax.swing.GroupLayout(MascotaTab);
         MascotaTab.setLayout(MascotaTabLayout);
@@ -111,7 +125,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MascotaTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(MascotaTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                    .addComponent(PetScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                     .addComponent(PetProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -121,57 +135,84 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(PetProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addComponent(PetScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         MainTabbedPane.addTab("Mascota", MascotaTab);
 
-        jLabel1.setText("Crear Mascota");
+        CrearMascota.setText("Crear Mascota");
 
-        jLabel2.setText("Nombre");
+        NombrePet.setText("Nombre");
 
-        jLabel3.setText("Puntos de Vida");
+        PuntosdeVida.setText("Puntos de Vida");
 
-        jLabel4.setText("Delay");
+        Delay.setText("Delay");
 
-        jButton1.setText("jButton1");
+        Costo.setText("Costo");
 
-        jButton2.setText("jButton2");
+        ColorButton.setText("Color");
+        ColorButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ColorButtonMouseClicked(evt);
+            }
+        });
 
-        jLabel5.setText("Costo");
+        CrearPetButton.setText("Crear Mascota");
+        CrearPetButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CrearPetButtonMouseClicked(evt);
+            }
+        });
 
-        jLabel6.setText("Crear Item");
+        CrearItem.setText("Crear Item");
 
-        jLabel7.setText("Nombre");
+        NombreItem.setText("Nombre");
 
-        jCheckBox1.setText("Alimento");
+        AlimentoCheckBox.setText("Alimento");
 
-        jLabel8.setText("Probabilidad de Obtención");
+        Obtencion.setText("Probabilidad de Obtención");
 
-        jLabel9.setText("Precio de Venta");
+        PrecioVenta.setText("Precio de Venta");
 
-        jButton3.setText("jButton3");
+        CrearItemButton.setText("Crear Item");
+        CrearItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CrearItemButtonMouseClicked(evt);
+            }
+        });
 
-        jLabel10.setText("Crear Zona");
+        CrearZona.setText("Crear Zona");
 
-        jLabel11.setText("Nombre");
+        NombreZona.setText("Nombre");
 
-        jLabel12.setText("Probabilidad de Derrumbe");
+        Derrumbe.setText("Probabilidad de Derrumbe");
 
-        jLabel13.setText("Agregar Item");
+        Ataque.setText("Probabilidad de Ataque");
 
-        jLabel14.setText("Probabilidad de Ataque");
+        AgregarItem.setText("Agregar Item");
 
-        jScrollPane2.setViewportView(jList1);
+        AddItemList.setModel(new DefaultListModel());
+        AddItemScrollPane.setViewportView(AddItemList);
 
-        jLabel15.setText("Items");
+        Items.setText("Items");
 
-        jScrollPane3.setViewportView(jList2);
+        ItemsList.setModel(new DefaultListModel());
+        ItemsScrollPane.setViewportView(ItemsList);
 
-        jButton4.setText("Agregar Item");
+        AgregarItemButton.setText("Agregar Item");
+        AgregarItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AgregarItemButtonMouseClicked(evt);
+            }
+        });
 
-        jButton5.setText("Crear Zona");
+        CrearZonaButton.setText("Crear Zona");
+        CrearZonaButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CrearZonaButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout AdminTabLayout = new javax.swing.GroupLayout(AdminTab);
         AdminTab.setLayout(AdminTabLayout);
@@ -180,50 +221,50 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(AdminTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(CrearMascota)
+                    .addComponent(NombrePet)
+                    .addComponent(PuntosdeVida)
+                    .addComponent(Delay)
+                    .addComponent(PetNombreTextField)
+                    .addComponent(PuntosVidaTextField)
+                    .addComponent(DelayTextField)
+                    .addComponent(Costo)
+                    .addComponent(CostoTextField)
+                    .addComponent(ColorButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CrearPetButton, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
                 .addGap(31, 31, 31)
                 .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel7)
-                        .addComponent(jTextField5)
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField6)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField7)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(CrearItem)
+                        .addComponent(NombreItem)
+                        .addComponent(ItemNombreTextField)
+                        .addComponent(AlimentoCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Obtencion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ObtencionTextField)
+                    .addComponent(PrecioVenta)
+                    .addComponent(PrecioVentaTextField)
+                    .addComponent(CrearItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
+                    .addComponent(CrearZona)
                     .addGroup(AdminTabLayout.createSequentialGroup()
                         .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
+                            .addComponent(AgregarItem)
+                            .addComponent(NombreZona)
+                            .addComponent(Derrumbe, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Ataque)
                             .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                                .addComponent(jTextField10, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(DerrumbeTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                .addComponent(AtaqueTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(AddItemScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(ZonaNombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel15)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(Items)
+                                .addComponent(AgregarItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(CrearZonaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(ItemsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         AdminTabLayout.setVerticalGroup(
@@ -232,93 +273,98 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminTabLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(CrearMascota)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
+                        .addComponent(NombrePet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PetNombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
+                        .addComponent(PuntosdeVida)
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PuntosVidaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
+                        .addComponent(Delay)
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DelayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
+                        .addComponent(Costo)
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CostoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addComponent(ColorButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(CrearPetButton)
                         .addContainerGap(41, Short.MAX_VALUE))
                     .addGroup(AdminTabLayout.createSequentialGroup()
                         .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel10))
+                            .addComponent(CrearItem)
+                            .addComponent(CrearZona))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
+                        .addComponent(NombreItem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ItemNombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
-                        .addComponent(jCheckBox1)
+                        .addComponent(AlimentoCheckBox)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel8)
+                        .addComponent(Obtencion)
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ObtencionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel9)
+                        .addComponent(PrecioVenta)
                         .addGap(4, 4, 4)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PrecioVentaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(CrearItemButton)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(AdminTabLayout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(AdminTabLayout.createSequentialGroup()
-                                .addComponent(jLabel15)
+                                .addComponent(Items)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ItemsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(36, 36, 36)
-                                .addComponent(jButton4)
+                                .addComponent(AgregarItemButton)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton5))
+                                .addComponent(CrearZonaButton))
                             .addGroup(AdminTabLayout.createSequentialGroup()
-                                .addComponent(jLabel11)
+                                .addComponent(NombreZona)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ZonaNombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(AdminTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(AdminTabLayout.createSequentialGroup()
                                         .addGap(56, 56, 56)
-                                        .addComponent(jLabel14)
+                                        .addComponent(Ataque)
                                         .addGap(24, 24, 24))
                                     .addGroup(AdminTabLayout.createSequentialGroup()
-                                        .addComponent(jLabel12)
+                                        .addComponent(Derrumbe)
                                         .addGap(3, 3, 3)
-                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(DerrumbeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(AtaqueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel13)
+                                .addComponent(AgregarItem)
                                 .addGap(4, 4, 4)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(AddItemScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         MainTabbedPane.addTab("Administración", AdminTab);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        OutputTextArea.setColumns(20);
+        OutputTextArea.setRows(5);
+        OutputScrollPane.setViewportView(OutputTextArea);
 
-        jButton6.setText("Ir");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        InputButton.setText("Ir");
+        InputButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                InputButtonMouseClicked(evt);
+            }
+        });
+        InputButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                InputButtonActionPerformed(evt);
             }
         });
 
@@ -329,22 +375,22 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(ComandosTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ComandosTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4)
+                    .addComponent(OutputScrollPane)
                     .addGroup(ComandosTabLayout.createSequentialGroup()
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(InputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)))
+                        .addComponent(InputButton, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         ComandosTabLayout.setVerticalGroup(
             ComandosTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ComandosTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(OutputScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(ComandosTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6))
+                    .addComponent(InputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InputButton))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -364,9 +410,124 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void InputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_InputButtonActionPerformed
+
+    private void ColorButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ColorButtonMouseClicked
+        ColorButton.setBackground(JColorChooser.showDialog(rootPane, "Seleccione un Color", Color.yellow));
+    }//GEN-LAST:event_ColorButtonMouseClicked
+
+    private void CrearPetButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CrearPetButtonMouseClicked
+        String Nombre = PetNombreTextField.getText();
+        int PuntosVida = Integer.parseInt(PuntosVidaTextField.getText());
+        int Delay = Integer.parseInt(DelayTextField.getText());
+        int Costo = Integer.parseInt(CostoTextField.getText());
+        Color ColorMascota = ColorButton.getBackground();
+        Mascota m = new Mascota(Nombre, PuntosVida, PuntosVida, Delay, Costo, ColorMascota);
+        MascotasDisponibles.add(m);
+        
+        PetNombreTextField.setText("");
+        PuntosVidaTextField.setText("");
+        DelayTextField.setText("");
+        CostoTextField.setText("");
+        ColorButton.setBackground(null);
+        
+    }//GEN-LAST:event_CrearPetButtonMouseClicked
+
+    private void CrearItemButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CrearItemButtonMouseClicked
+        int ID = ContadorItems;
+        ContadorItems++;
+        String Nombre = ItemNombreTextField.getText();
+        boolean Alimentos;
+        if (AlimentoCheckBox.isSelected()) {
+            Alimentos = true;
+        } else {
+            Alimentos = false;
+        }
+        int Obtencion = Integer.parseInt(ObtencionTextField.getText());
+        int Precio = Integer.parseInt(PrecioVentaTextField.getText());
+        Item i = new Item(ID, Nombre, Alimentos, Obtencion, Precio);
+        ItemsDisponibles.add(i);
+        
+        DefaultListModel modelo = (DefaultListModel) AddItemList.getModel();
+        modelo.addElement(i);
+        AddItemList.setModel(modelo);
+        
+        ItemNombreTextField.setText("");
+        ObtencionTextField.setText("");
+        PrecioVentaTextField.setText("");
+        AlimentoCheckBox.setSelected(false);
+        
+        
+    }//GEN-LAST:event_CrearItemButtonMouseClicked
+
+    private void CrearZonaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CrearZonaButtonMouseClicked
+        
+        Zona z = new Zona();
+        
+        int ID = ContadorZonas;
+        ContadorZonas++;
+        String Nombre = ZonaNombreTextField.getText();
+        int numero = 100 + random.nextInt(200);
+        int Remuneracion = ID * numero;
+        int PropDerrumbe = Integer.parseInt(DerrumbeTextField.getText());
+        int PropAtaque = Integer.parseInt(AtaqueTextField.getText());
+        
+        DefaultListModel listaadd
+                    = (DefaultListModel) ItemsList.getModel();
+        
+        for (int i = 0; i < listaadd.size(); i++) {
+            z.ItemsZona.add((Item)listaadd.getElementAt(i));
+        }
+        
+        ZonaNombreTextField.setText("");
+        DerrumbeTextField.setText("");
+        AtaqueTextField.setText("");
+        
+        DefaultListModel erase
+                    = (DefaultListModel) ItemsList.getModel();
+        erase.clear();
+        ItemsList.setModel(erase);
+
+                
+    }//GEN-LAST:event_CrearZonaButtonMouseClicked
+
+    private void AgregarItemButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AgregarItemButtonMouseClicked
+        DefaultListModel listabase
+                    = (DefaultListModel) AddItemList.getModel();
+        DefaultListModel listaadd
+                    = (DefaultListModel) ItemsList.getModel();
+        
+        listaadd.add(0, listabase.get(AddItemList.getSelectedIndex()));
+    }//GEN-LAST:event_AgregarItemButtonMouseClicked
+
+    private void InputButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InputButtonMouseClicked
+        
+        String comando = InputTextField.getText();
+        String mascota = "";
+        if (comando.contains("!pet active")) {
+            for (int i = 0; i < player.MascotasJugador.size(); i++) {
+                if (comando.contains(player.MascotasJugador.get(i).getNombreMascota())) {
+                    currentpet = player.MascotasJugador.get(i);
+                }
+            }
+        }
+        if (comando.contains("!pet feed")) {
+            int comida = comando.charAt(comando.length()-1);
+            for (int i = 0; i < player.ItemsJugador.size(); i++) {
+                if (player.ItemsJugador.get(i).getIDItem() == comida) {
+                    currentpet.setPuntosVidaDecrease(currentpet.getPuntosVida());
+                    player.ItemsJugador.remove(i);
+                }
+            }
+        }
+        if (comando.equals("!pet list")) {
+            
+            OutputTextArea.append(mascota);
+        }
+        
+    }//GEN-LAST:event_InputButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -379,7 +540,7 @@ public class Principal extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -404,51 +565,51 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> AddItemList;
+    private javax.swing.JScrollPane AddItemScrollPane;
     private javax.swing.JPanel AdminTab;
+    private javax.swing.JLabel AgregarItem;
+    private javax.swing.JButton AgregarItemButton;
+    private javax.swing.JCheckBox AlimentoCheckBox;
+    private javax.swing.JLabel Ataque;
+    private javax.swing.JTextField AtaqueTextField;
+    private javax.swing.JButton ColorButton;
     private javax.swing.JPanel ComandosTab;
+    private javax.swing.JLabel Costo;
+    private javax.swing.JTextField CostoTextField;
+    private javax.swing.JLabel CrearItem;
+    private javax.swing.JButton CrearItemButton;
+    private javax.swing.JLabel CrearMascota;
+    private javax.swing.JButton CrearPetButton;
+    private javax.swing.JLabel CrearZona;
+    private javax.swing.JButton CrearZonaButton;
+    private javax.swing.JLabel Delay;
+    private javax.swing.JTextField DelayTextField;
+    private javax.swing.JLabel Derrumbe;
+    private javax.swing.JTextField DerrumbeTextField;
+    private javax.swing.JButton InputButton;
+    private javax.swing.JTextField InputTextField;
+    private javax.swing.JTextField ItemNombreTextField;
+    private javax.swing.JLabel Items;
+    private javax.swing.JList<String> ItemsList;
+    private javax.swing.JScrollPane ItemsScrollPane;
     private javax.swing.JTabbedPane MainTabbedPane;
     private javax.swing.JPanel MascotaTab;
+    private javax.swing.JLabel NombreItem;
+    private javax.swing.JLabel NombrePet;
+    private javax.swing.JLabel NombreZona;
+    private javax.swing.JLabel Obtencion;
+    private javax.swing.JTextField ObtencionTextField;
+    private javax.swing.JScrollPane OutputScrollPane;
+    private javax.swing.JTextArea OutputTextArea;
+    private javax.swing.JTextField PetNombreTextField;
     private javax.swing.JProgressBar PetProgressBar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JScrollPane PetScrollPane;
+    private javax.swing.JTable PetTable;
+    private javax.swing.JLabel PrecioVenta;
+    private javax.swing.JTextField PrecioVentaTextField;
+    private javax.swing.JTextField PuntosVidaTextField;
+    private javax.swing.JLabel PuntosdeVida;
+    private javax.swing.JTextField ZonaNombreTextField;
     // End of variables declaration//GEN-END:variables
 }

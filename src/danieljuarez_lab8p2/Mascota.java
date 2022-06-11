@@ -6,6 +6,7 @@ public class Mascota {
     
     public String NombreMascota;
     public int PuntosVida;
+    public int PuntosVidaDecrease;
     public int Delay;
     public int CostoMascota;
     public Color ColorMascota;
@@ -13,9 +14,10 @@ public class Mascota {
     public Mascota() {
     }
 
-    public Mascota(String NombreMascota, int PuntosVida, int Delay, int CostoMascota, Color ColorMascota) {
+    public Mascota(String NombreMascota, int PuntosVida, int PuntosVidaDecrease, int Delay, int CostoMascota, Color ColorMascota) {
         this.NombreMascota = NombreMascota;
         this.PuntosVida = PuntosVida;
+        this.PuntosVidaDecrease = PuntosVidaDecrease;
         this.Delay = Delay;
         this.CostoMascota = CostoMascota;
         this.ColorMascota = ColorMascota;
@@ -37,6 +39,14 @@ public class Mascota {
         this.PuntosVida = PuntosVida;
     }
 
+    public int getPuntosVidaDecrease() {
+        return PuntosVidaDecrease;
+    }
+
+    public void setPuntosVidaDecrease(int PuntosVidaDecrease) {
+        this.PuntosVidaDecrease = PuntosVidaDecrease;
+    }
+    
     public int getDelay() {
         return Delay;
     }
