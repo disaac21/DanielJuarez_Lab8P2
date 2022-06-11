@@ -636,6 +636,10 @@ public class Principal extends javax.swing.JFrame {
             OutputTextArea.append("Estado de Cuentas\n");
             OutputTextArea.append("Dinero: " + player.getDinero() + "\nBanco: " + player.getDineroBanco());
         }
+        if (comando.equals("!clear")) {
+            OutputTextArea.setText("");
+        }
+        InputTextField
     }//GEN-LAST:event_InputButtonMouseClicked
 
     /**
