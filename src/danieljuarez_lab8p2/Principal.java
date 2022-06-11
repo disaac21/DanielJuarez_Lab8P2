@@ -25,10 +25,6 @@ public class Principal extends javax.swing.JFrame {
     static Random random = new Random();
     Jugador player = new Jugador();
     Mascota currentpet = new Mascota();
-    boolean petfeed = false;
-    boolean petvive = false;
-    int decrease = currentpet.PuntosVidaDecrease;
-    Thread bar;
 
     /**
      * Creates new form Principal
@@ -37,9 +33,10 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         player.setDinero(1000);
         player.setDineroBanco(1000);
-        b = new Barra(PetProgressBar, petfeed, petvive, decrease);
-        bar = new Thread(b);
-        
+
+        b = new Barra(PetProgressBar, false, true, 0);
+        Thread proceso = new Thread(b);
+        proceso.start();
     }
 
     /**
@@ -519,12 +516,17 @@ public class Principal extends javax.swing.JFrame {
 
         String comando = InputTextField.getText();
         String mascota = "";
+
         OutputTextArea.append("\n");
         if (comando.contains("!pet active")) {
             for (int i = 0; i < player.MascotasJugador.size(); i++) {
                 if (comando.contains(player.MascotasJugador.get(i).getNombreMascota())) {
                     currentpet = player.MascotasJugador.get(i);
                     OutputTextArea.append("Mascota Activa: " + currentpet + "\n");
+                    PetProgressBar.setBackground(currentpet.getColorMascota());
+                    
+                    b.YaSet = true;
+                    b.start();
                 }
             }
         }
@@ -536,15 +538,7 @@ public class Principal extends javax.swing.JFrame {
                         OutputTextArea.append("Has Alimentado a " + currentpet + " con " + player.ItemsJugador.get(i).getNombreItem() + "\n");
                         currentpet.setPuntosVidaDecrease(currentpet.getPuntosVida());
                         player.ItemsJugador.remove(i);
-                        PetProgressBar.setBackground(currentpet.getColorMascota());
-                        petfeed = true;
-                        if (petfeed) {
-                            b.Cambio = true;
-                            decrease = currentpet.getPuntosVida();
-                            PetProgressBar.setValue(currentpet.PuntosVida);
-                            bar.start();
-                        }
-                        
+                        b.Decrease = currentpet.Delay;
                     } else {
                         OutputTextArea.append("El Item " + player.ItemsJugador.get(i) + " No Es Un Alimento\n");
                     }
