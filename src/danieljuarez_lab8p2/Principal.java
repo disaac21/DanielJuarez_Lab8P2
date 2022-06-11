@@ -25,6 +25,9 @@ public class Principal extends javax.swing.JFrame {
     static Random random = new Random();
     Jugador player = new Jugador();
     Mascota currentpet = new Mascota();
+    boolean petfeed = false;
+    boolean petvive = false;
+    int decrease = currentpet.PuntosVidaDecrease;
 
     /**
      * Creates new form Principal
@@ -33,6 +36,9 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         player.setDinero(1000);
         player.setDineroBanco(1000);
+        b = new Barra(PetProgressBar, petfeed, petvive, decrease);
+        Thread bar = new Thread(b);
+        bar.start();
     }
 
     /**
@@ -95,9 +101,6 @@ public class Principal extends javax.swing.JFrame {
 
         PetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
@@ -521,10 +524,12 @@ public class Principal extends javax.swing.JFrame {
                 if (comando.contains(player.MascotasJugador.get(i).getNombreMascota())) {
                     currentpet = player.MascotasJugador.get(i);
                     OutputTextArea.append("Mascota Activa: " + currentpet + "\n");
+                    b.Cambio = true;
                 }
             }
         }
         if (comando.contains("!pet feed")) {
+            petfeed = false;
             for (int i = 0; i < player.ItemsJugador.size(); i++) {
                 int comida = Integer.parseInt(comando.substring(10, comando.length()));
                 if (player.ItemsJugador.get(i).IDItem == comida) {
@@ -532,6 +537,12 @@ public class Principal extends javax.swing.JFrame {
                         OutputTextArea.append("Has Alimentado a " + currentpet + " con " + player.ItemsJugador.get(i).getNombreItem() + "\n");
                         currentpet.setPuntosVidaDecrease(currentpet.getPuntosVida());
                         player.ItemsJugador.remove(i);
+                        PetProgressBar.setBackground(currentpet.getColorMascota());
+                        petfeed = true;
+                        if (petfeed) {
+                            PetProgressBar.setValue(currentpet.PuntosVida);
+                        }
+                        
                     } else {
                         OutputTextArea.append("El Item " + player.ItemsJugador.get(i) + " No Es Un Alimento\n");
                     }
@@ -783,4 +794,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel PuntosdeVida;
     private javax.swing.JTextField ZonaNombreTextField;
     // End of variables declaration//GEN-END:variables
+
+    Barra b;
 }
