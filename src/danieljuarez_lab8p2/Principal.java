@@ -25,6 +25,7 @@ public class Principal extends javax.swing.JFrame {
     static Random random = new Random();
     Jugador player = new Jugador();
     Mascota currentpet = new Mascota();
+
     /**
      * Creates new form Principal
      */
@@ -426,13 +427,13 @@ public class Principal extends javax.swing.JFrame {
         Color ColorMascota = ColorButton.getBackground();
         Mascota m = new Mascota(Nombre, PuntosVida, PuntosVida, Delay, Costo, ColorMascota);
         MascotasDisponibles.add(m);
-        
+
         PetNombreTextField.setText("");
         PuntosVidaTextField.setText("");
         DelayTextField.setText("");
         CostoTextField.setText("");
         ColorButton.setBackground(null);
-        
+
     }//GEN-LAST:event_CrearPetButtonMouseClicked
 
     private void CrearItemButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CrearItemButtonMouseClicked
@@ -449,23 +450,23 @@ public class Principal extends javax.swing.JFrame {
         int Precio = Integer.parseInt(PrecioVentaTextField.getText());
         Item i = new Item(ID, Nombre, Alimentos, Obtencion, Precio);
         ItemsDisponibles.add(i);
-        
+
         DefaultListModel modelo = (DefaultListModel) AddItemList.getModel();
         modelo.addElement(i);
         AddItemList.setModel(modelo);
-        
+
         ItemNombreTextField.setText("");
         ObtencionTextField.setText("");
         PrecioVentaTextField.setText("");
         AlimentoCheckBox.setSelected(false);
-        
-        
+
+
     }//GEN-LAST:event_CrearItemButtonMouseClicked
 
     private void CrearZonaButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CrearZonaButtonMouseClicked
-        
+
         Zona z = new Zona();
-        
+
         int ID = ContadorZonas;
         ContadorZonas++;
         String Nombre = ZonaNombreTextField.getText();
@@ -473,60 +474,168 @@ public class Principal extends javax.swing.JFrame {
         int Remuneracion = ID * numero;
         int PropDerrumbe = Integer.parseInt(DerrumbeTextField.getText());
         int PropAtaque = Integer.parseInt(AtaqueTextField.getText());
-        
+
         DefaultListModel listaadd
-                    = (DefaultListModel) ItemsList.getModel();
-        
+                = (DefaultListModel) ItemsList.getModel();
+
         for (int i = 0; i < listaadd.size(); i++) {
-            z.ItemsZona.add((Item)listaadd.getElementAt(i));
+            z.ItemsZona.add((Item) listaadd.getElementAt(i));
         }
-        
+
         ZonaNombreTextField.setText("");
         DerrumbeTextField.setText("");
         AtaqueTextField.setText("");
-        
+
         DefaultListModel erase
-                    = (DefaultListModel) ItemsList.getModel();
+                = (DefaultListModel) ItemsList.getModel();
         erase.clear();
         ItemsList.setModel(erase);
 
-                
+
     }//GEN-LAST:event_CrearZonaButtonMouseClicked
 
     private void AgregarItemButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AgregarItemButtonMouseClicked
         DefaultListModel listabase
-                    = (DefaultListModel) AddItemList.getModel();
+                = (DefaultListModel) AddItemList.getModel();
         DefaultListModel listaadd
-                    = (DefaultListModel) ItemsList.getModel();
-        
+                = (DefaultListModel) ItemsList.getModel();
+
         listaadd.add(0, listabase.get(AddItemList.getSelectedIndex()));
     }//GEN-LAST:event_AgregarItemButtonMouseClicked
 
     private void InputButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InputButtonMouseClicked
-        
+
         String comando = InputTextField.getText();
         String mascota = "";
+        OutputTextArea.append("\n");
         if (comando.contains("!pet active")) {
             for (int i = 0; i < player.MascotasJugador.size(); i++) {
                 if (comando.contains(player.MascotasJugador.get(i).getNombreMascota())) {
                     currentpet = player.MascotasJugador.get(i);
+                    OutputTextArea.append("Mascota Activa: " + currentpet + "\n");
                 }
             }
         }
         if (comando.contains("!pet feed")) {
-            int comida = comando.charAt(comando.length()-1);
+            int comida = comando.charAt(comando.length() - 1);
             for (int i = 0; i < player.ItemsJugador.size(); i++) {
                 if (player.ItemsJugador.get(i).getIDItem() == comida) {
+                    OutputTextArea.append("Has Alimentado a " + currentpet + " con " + player.ItemsJugador.get(i).getNombreItem() + "\n");
                     currentpet.setPuntosVidaDecrease(currentpet.getPuntosVida());
                     player.ItemsJugador.remove(i);
                 }
             }
         }
         if (comando.equals("!pet list")) {
-            
-            OutputTextArea.append(mascota);
+            OutputTextArea.append("Lista Mascotas");
+            for (int i = 0; i < MascotasDisponibles.size(); i++) {
+                OutputTextArea.append(i + " - " + MascotasDisponibles.get(i) + "\n");
+            }
         }
-        
+        if (comando.contains("!adopt")) {
+            for (int i = 0; i < MascotasDisponibles.size(); i++) {
+                if (comando.equals(MascotasDisponibles.get(i).getNombreMascota())) {
+                    player.MascotasJugador.add(MascotasDisponibles.get(i));
+                    MascotasDisponibles.remove(i);
+                }
+            }
+        }
+        int numero = 0 + random.nextInt(100);
+        if (comando.equals("!mine")) {
+            for (int i = 0; i < Zonas.size(); i++) {
+                if (comando.equals(Zonas.get(i).getIDZona())) {
+                    if (numero > Zonas.get(i).getProbabilidadDerrumbe()) {
+                        int item = 0 + random.nextInt(Zonas.get(i).ItemsZona.size());
+                        player.Dinero = player.Dinero + Zonas.get(i).Remuneracion;
+                        OutputTextArea.append("Ha Ganado " + Zonas.get(i).getRemuneracion() + "\n");
+                        player.ItemsJugador.add(Zonas.get(i).getItemsZona().get(item));
+                        OutputTextArea.append("Ha Ganado un " + Zonas.get(i).getItemsZona().get(item).NombreItem + "\n");
+                    } else {
+                        OutputTextArea.append("La Mina Se Derrumbó\n");
+                        player.Dinero = 0;
+                    }
+                }
+            }
+        }
+        if (comando.equals("!fish")) {
+            for (int i = 0; i < Zonas.size(); i++) {
+                if (comando.equals(Zonas.get(i).getIDZona())) {
+                    if (numero > Zonas.get(i).getProbabilidadAtaque()) {
+                        int item = 0 + random.nextInt(Zonas.get(i).ItemsZona.size());
+                        player.Dinero = player.Dinero + Zonas.get(i).Remuneracion;
+                        OutputTextArea.append("Ha Ganado " + Zonas.get(i).getRemuneracion() + "\n");
+                        player.ItemsJugador.add(Zonas.get(i).getItemsZona().get(item));
+                        OutputTextArea.append("Ha Ganado un " + Zonas.get(i).getItemsZona().get(item).NombreItem + "\n");
+                    } else {
+                        OutputTextArea.append("Usted Fue Atacado\n");
+                        player.Dinero = 0;
+                    }
+                }
+            }
+        }
+        if (comando.equals("!zone list")) {
+            OutputTextArea.append("Lista Zonas");
+            for (int i = 0; i < Zonas.size(); i++) {
+                OutputTextArea.append(Zonas.get(i).getIDZona() + " - " + Zonas.get(i) + "\n");
+            }
+        }
+        if (comando.contains("!sell")) {
+            for (int i = 0; i < player.ItemsJugador.size(); i++) {
+                int item = comando.charAt(comando.length() - 1);
+                if (player.ItemsJugador.get(i).IDItem == item) {
+                    player.Dinero = player.Dinero + player.ItemsJugador.get(i).getPrecioItem();
+                    OutputTextArea.append("Ha Vendido el Item " + player.ItemsJugador.get(i) + " Ganando " + player.ItemsJugador.get(i).getPrecioItem() + "\n");
+                    player.ItemsJugador.remove(i);
+                }
+            }
+        }
+        if (comando.equals("!item list")) {
+            OutputTextArea.append("Lista Items Disponibles");
+            for (int i = 0; i < ItemsDisponibles.size(); i++) {
+                OutputTextArea.append(ItemsDisponibles.get(i).getIDItem() + " - " + ItemsDisponibles.get(i) + "\n");
+            }
+        }
+        if (comando.contains("!buy")) {
+            for (int i = 0; i < ItemsDisponibles.size(); i++) {
+                int item = comando.charAt(comando.length() - 1);
+                if (ItemsDisponibles.get(i).getIDItem() == item) {
+                    if (player.getDinero() > ItemsDisponibles.get(i).getPrecioItem()) {
+                        player.Dinero = player.Dinero - ItemsDisponibles.get(i).PrecioItem;
+                        OutputTextArea.append("Ha Comprado " + ItemsDisponibles.get(i) + "\n");
+                    }
+                }
+            }
+        }
+        if (comando.equals("!bag")) {
+            OutputTextArea.append("Lista Items del Usuario");
+            for (int i = 0; i < player.ItemsJugador.size(); i++) {
+                OutputTextArea.append(player.ItemsJugador.get(i).getIDItem() + " - " + player.ItemsJugador.get(i) + "\n");
+            }
+        }
+        if (comando.contains("!d")) {
+            int deposito = Integer.parseInt(comando.substring(0,comando.length()));
+            if (player.Dinero > deposito) {
+                OutputTextArea.append("Se Ha Depositado " + deposito + " a Su Cuenta\n");
+                player.Dinero = player.Dinero - deposito;
+                player.DineroBanco = player.DineroBanco + deposito;
+            } else {
+                OutputTextArea.append("No Cuenta Con Tanto Dinero En Su Bolsa\n");
+            }
+        }
+        if (comando.contains("!w")) {
+            int retiro = Integer.parseInt(comando.substring(0,comando.length()));
+            if (player.DineroBanco > retiro) {
+                OutputTextArea.append("Se Ha Retirado " + retiro + " a Su Cuenta\n");
+                player.DineroBanco = player.DineroBanco - retiro;
+                player.Dinero = player.Dinero + retiro;
+            } else {
+                OutputTextArea.append("No Cuenta Con Tanto Dinero En Su Cuenta\n");
+            }
+        }
+        if (comando.equals("!b")) {
+            OutputTextArea.append("Estado de Cuentas\n");
+            OutputTextArea.append("Dinero: " + player.getDinero() + "\nBanco: " + player.getDineroBanco());
+        }
     }//GEN-LAST:event_InputButtonMouseClicked
 
     /**
